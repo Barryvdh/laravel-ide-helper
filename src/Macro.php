@@ -11,13 +11,16 @@ class Macro extends Method
      * Macro constructor.
      *
      * @param \ReflectionFunction $method
-     * @param string              $alias
      * @param \ReflectionClass    $class
-     * @param null                $methodName
+     * @param string|null         $methodName
      * @param array               $interfaces
      */
-    public function __construct(\ReflectionFunction $method, $alias, $class, $methodName = null, $interfaces = array())
-    {
+    public function __construct(
+        \ReflectionFunction $method,
+        \ReflectionClass $class,
+        $methodName = null,
+        $interfaces = array()
+    ) {
         $this->method = $method;
         $this->interfaces = $interfaces;
         $this->name = $methodName ?: $method->name;
@@ -42,6 +45,7 @@ class Macro extends Method
 
         //Reference the 'real' function in the declaringclass
         $this->declaringClassName = '\\' . ltrim($class->name, '\\');
-        $this->root = '\\' . ltrim($class->getName(), '\\');
+        $this->rootClassName = '\\' . ltrim($class->getName(), '\\');
+        $this->rootMethodName = $method->name;
     }
 }

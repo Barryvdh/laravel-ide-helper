@@ -25,7 +25,6 @@ class Method
     /** @var \ReflectionMethod  */
     protected $method;
 
-    protected $output = '';
     protected $name;
     protected $namespace;
     protected $params = array();
@@ -33,15 +32,24 @@ class Method
     protected $interfaces = array();
     protected $return = null;
 
+    protected $declaringClassName;
+    protected $rootClassName;
+    protected $rootMethodName;
+
     /**
+     * Method constructor.
+     *
      * @param \ReflectionMethod $method
-     * @param string $alias
-     * @param \ReflectionClass $class
-     * @param string|null $methodName
-     * @param array $interfaces
+     * @param \ReflectionClass  $class
+     * @param string|null       $methodName
+     * @param array             $interfaces
      */
-    public function __construct(\ReflectionMethod $method, $alias, $class, $methodName = null, $interfaces = array())
-    {
+    public function __construct(
+        \ReflectionMethod $method,
+        \ReflectionClass $class,
+        $methodName = null,
+        $interfaces = array()
+    ) {
         $this->method = $method;
         $this->interfaces = $interfaces;
         $this->name = $methodName ?: $method->name;
@@ -67,11 +75,12 @@ class Method
         //Reference the 'real' function in the declaringclass
         $declaringClass = $method->getDeclaringClass();
         $this->declaringClassName = '\\' . ltrim($declaringClass->name, '\\');
-        $this->root = '\\' . ltrim($class->getName(), '\\');
+        $this->rootClassName = '\\' . ltrim($class->getName(), '\\');
+        $this->rootMethodName = $method->name;
     }
 
     /**
-     * Get the class wherein the function resides
+     * Get the name of the class wherein the function resides
      *
      * @return string
      */
@@ -81,13 +90,23 @@ class Method
     }
 
     /**
-     * Return the class from which this function would be called
+     * Return the name of the class from which this function would be called
      *
      * @return string
      */
-    public function getRoot()
+    public function getRootClass()
     {
-        return $this->root;
+        return $this->rootClassName;
+    }
+
+    /**
+     * Return the method name in the class from which this function would be called
+     *
+     * @return string
+     */
+    public function getRootMethod()
+    {
+        return $this->rootMethodName;
     }
 
     /**
