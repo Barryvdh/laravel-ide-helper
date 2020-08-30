@@ -61,12 +61,11 @@ class IdeHelperServiceProvider extends ServiceProvider
     {
         $configPath = __DIR__ . '/../config/ide-helper.php';
         $this->mergeConfigFrom($configPath, 'ide-helper');
-        $localViewFactory = $this->createLocalViewFactory();
 
         $this->app->singleton(
             'command.ide-helper.generate',
-            function ($app) use ($localViewFactory) {
-                return new GeneratorCommand($app['config'], $app['files'], $localViewFactory);
+            function ($app) {
+                return new GeneratorCommand($app['config'], $app['files'], $this->createLocalViewFactory());
             }
         );
 
@@ -79,8 +78,8 @@ class IdeHelperServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             'command.ide-helper.meta',
-            function ($app) use ($localViewFactory) {
-                return new MetaCommand($app['files'], $localViewFactory, $app['config']);
+            function ($app) {
+                return new MetaCommand($app['files'], $this->createLocalViewFactory(), $app['config']);
             }
         );
 
@@ -114,14 +113,16 @@ class IdeHelperServiceProvider extends ServiceProvider
      */
     private function createLocalViewFactory()
     {
-        $resolver = new EngineResolver();
-        $resolver->register('php', function () {
-            return new PhpEngine();
-        });
-        $finder = new FileViewFinder($this->app['files'], [__DIR__ . '/../resources/views']);
-        $factory = new Factory($resolver, $finder, $this->app['events']);
-        $factory->addExtension('php', 'php');
-
+        static $factory=null;
+        if (!$factory) {
+            $resolver = new EngineResolver();
+            $resolver->register('php', function () {
+                return new PhpEngine();
+            });
+            $finder = new FileViewFinder($this->app['files'], [__DIR__ . '/../resources/views']);
+            $factory = new Factory($resolver, $finder, $this->app['events']);
+            $factory->addExtension('php', 'php');
+        }
         return $factory;
     }
 }
