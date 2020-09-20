@@ -24,6 +24,9 @@ All notable changes to this project will be documented in this file.
 - Add option to force usage of FQN [\#1031 / edvordo](https://github.com/barryvdh/laravel-ide-helper/pull/1031)
 - Add support for macros of all macroable classes [\#1006 / domkrm](https://github.com/barryvdh/laravel-ide-helper/pull/1006)
 
+### Fixed
+- Restore original event dispatcher after Event::fake() [\#879 / aurelien-roy](https://github.com/barryvdh/laravel-ide-helper/pull/879)
+
 2020-08-11, 2.8.0
 -----------------
 ### Added
