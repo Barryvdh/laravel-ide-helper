@@ -210,7 +210,7 @@ class ModelsCommand extends Command
         ];
     }
 
-    protected function generateDocs($loadModels, $ignore = '')
+    protected function generateDocs($loadModels, $ignore = ''): string
     {
         $output = "<?php
 
@@ -301,7 +301,12 @@ class ModelsCommand extends Command
     }
 
 
-    protected function loadModels()
+    /**
+     * @return (int|string)[]
+     *
+     * @psalm-return list<array-key>
+     */
+    protected function loadModels(): array
     {
         $models = [];
         foreach ($this->dirs as $dir) {
@@ -335,8 +340,10 @@ class ModelsCommand extends Command
      * cast the properties's type from $casts.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return void
      */
-    protected function castPropertiesType($model)
+    protected function castPropertiesType($model): void
     {
         $casts = $model->getCasts();
         foreach ($casts as $name => $type) {
@@ -411,6 +418,8 @@ class ModelsCommand extends Command
      * Load the properties from the database table.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return void
      */
     protected function getPropertiesFromTable($model)
     {
@@ -508,8 +517,10 @@ class ModelsCommand extends Command
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return void
      */
-    protected function getPropertiesFromMethods($model)
+    protected function getPropertiesFromMethods($model): void
     {
         $methods = get_class_methods($model);
         if ($methods) {
@@ -712,8 +723,10 @@ class ModelsCommand extends Command
      * @param bool|null   $write
      * @param string|null $comment
      * @param bool        $nullable
+     *
+     * @return void
      */
-    protected function setProperty($name, $type = null, $read = null, $write = null, $comment = '', $nullable = false)
+    protected function setProperty($name, $type = null, $read = null, $write = null, $comment = '', $nullable = false): void
     {
         if (!isset($this->properties[$name])) {
             $this->properties[$name] = [];
@@ -737,7 +750,7 @@ class ModelsCommand extends Command
         }
     }
 
-    protected function setMethod($name, $type = '', $arguments = [])
+    protected function setMethod(string $name, string $type = '', array $arguments = []): void
     {
         $methods = array_change_key_case($this->methods, CASE_LOWER);
 
@@ -900,7 +913,7 @@ class ModelsCommand extends Command
      * @return array
      * @throws \ReflectionException
      */
-    public function getParameters($method)
+    public function getParameters(\ReflectionMethod $method)
     {
         //Loop through the default values for parameters, and make the correct output string
         $paramsWithDefault = [];
@@ -1025,9 +1038,12 @@ class ModelsCommand extends Command
 
     /**
      * Generates methods provided by the SoftDeletes trait
+     *
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return void
      */
-    protected function getSoftDeleteMethods($model)
+    protected function getSoftDeleteMethods($model): void
     {
         $traits = class_uses(get_class($model), true);
         if (in_array('Illuminate\\Database\\Eloquent\\SoftDeletes', $traits)) {
@@ -1068,9 +1084,12 @@ class ModelsCommand extends Command
 
     /**
      * Generates methods that return collections
+     *
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return void
      */
-    protected function getCollectionMethods($model)
+    protected function getCollectionMethods($model): void
     {
         $collectionClass = $this->getCollectionClass(get_class($model));
 
