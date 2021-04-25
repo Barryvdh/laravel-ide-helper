@@ -11,38 +11,38 @@
 
 namespace Barryvdh\LaravelIdeHelper\Console;
 
-use Barryvdh\LaravelIdeHelper\Contracts\ModelHookInterface;
-use Barryvdh\Reflection\DocBlock;
-use Barryvdh\Reflection\DocBlock\Context;
-use Barryvdh\Reflection\DocBlock\Serializer as DocBlockSerializer;
-use Barryvdh\Reflection\DocBlock\Tag;
-use Composer\Autoload\ClassMapGenerator;
-use Illuminate\Console\Command;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use phpDocumentor\Reflection\Types\ContextFactory;
-use ReflectionClass;
-use ReflectionNamedType;
-use ReflectionObject;
-use ReflectionType;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
+use ReflectionType;
+use ReflectionClass;
+use ReflectionObject;
+use ReflectionNamedType;
+use Illuminate\Support\Str;
+use Illuminate\Console\Command;
+use Barryvdh\Reflection\DocBlock;
+use Barryvdh\Reflection\DocBlock\Tag;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Model;
+use Composer\Autoload\ClassMapGenerator;
+use Barryvdh\Reflection\DocBlock\Context;
+use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use phpDocumentor\Reflection\Types\ContextFactory;
+use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Symfony\Component\Console\Output\OutputInterface;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Barryvdh\LaravelIdeHelper\Contracts\ModelHookInterface;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Barryvdh\Reflection\DocBlock\Serializer as DocBlockSerializer;
 
 /**
  * A command to generate autocomplete information for your IDE
@@ -181,7 +181,7 @@ class ModelsCommand extends Command
     protected function getArguments()
     {
         return [
-          ['model', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Which models to include', []],
+            ['model', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Which models to include', []],
         ];
     }
 
@@ -193,21 +193,25 @@ class ModelsCommand extends Command
     protected function getOptions()
     {
         return [
-          ['filename', 'F', InputOption::VALUE_OPTIONAL, 'The path to the helper file', $this->filename],
-          ['dir', 'D', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-              'The model dir, supports glob patterns', [], ],
-          ['write', 'W', InputOption::VALUE_NONE, 'Write to Model file'],
-          ['write-mixin', 'M', InputOption::VALUE_NONE,
-              "Write models to {$this->filename} and adds @mixin to each model, avoiding IDE duplicate declaration warnings",
-          ],
-          ['nowrite', 'N', InputOption::VALUE_NONE, 'Don\'t write to Model file'],
-          ['reset', 'R', InputOption::VALUE_NONE, 'Remove the original phpdocs instead of appending'],
-          ['smart-reset', 'r', InputOption::VALUE_NONE, 'Refresh the properties/methods list, but keep the text'],
-          ['phpstorm-noinspections', 'p', InputOption::VALUE_NONE,
-              'Add PhpFullyQualifiedNameUsageInspection and PhpUnnecessaryFullyQualifiedNameInspection PHPStorm ' .
-              'noinspection tags',
-          ],
-          ['ignore', 'I', InputOption::VALUE_OPTIONAL, 'Which models to ignore', ''],
+            ['filename', 'F', InputOption::VALUE_OPTIONAL, 'The path to the helper file', $this->filename],
+            [
+                'dir', 'D', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'The model dir, supports glob patterns', [],
+            ],
+            ['write', 'W', InputOption::VALUE_NONE, 'Write to Model file'],
+            [
+                'write-mixin', 'M', InputOption::VALUE_NONE,
+                "Write models to {$this->filename} and adds @mixin to each model, avoiding IDE duplicate declaration warnings",
+            ],
+            ['nowrite', 'N', InputOption::VALUE_NONE, 'Don\'t write to Model file'],
+            ['reset', 'R', InputOption::VALUE_NONE, 'Remove the original phpdocs instead of appending'],
+            ['smart-reset', 'r', InputOption::VALUE_NONE, 'Refresh the properties/methods list, but keep the text'],
+            [
+                'phpstorm-noinspections', 'p', InputOption::VALUE_NONE,
+                'Add PhpFullyQualifiedNameUsageInspection and PhpUnnecessaryFullyQualifiedNameInspection PHPStorm ' .
+                    'noinspection tags',
+            ],
+            ['ignore', 'I', InputOption::VALUE_OPTIONAL, 'Which models to ignore', ''],
         ];
     }
 
@@ -297,7 +301,7 @@ class ModelsCommand extends Command
         if (!$hasDoctrine) {
             $this->error(
                 'Warning: `"doctrine/dbal": "~2.3"` is required to load database information. ' .
-                'Please require that in your composer.json and run `composer update`.'
+                    'Please require that in your composer.json and run `composer update`.'
             );
         }
 
@@ -442,6 +446,11 @@ class ModelsCommand extends Command
 
         foreach ($columns as $column) {
             $name = $column->getName();
+
+            if ($this->hasLowerCaseProperties()) {
+                $name = Str::lower($name);
+            }
+
             if (in_array($name, $model->getDates())) {
                 $type = $this->dateClass;
             } else {
@@ -502,8 +511,8 @@ class ModelsCommand extends Command
                 $this->setMethod(
                     Str::camel('where_' . $name),
                     $this->getClassNameInDestinationFile($model, $builderClass)
-                    . '|'
-                    . $this->getClassNameInDestinationFile($model, get_class($model)),
+                        . '|'
+                        . $this->getClassNameInDestinationFile($model, get_class($model)),
                     ['$value']
                 );
             }
@@ -605,9 +614,7 @@ class ModelsCommand extends Command
                     $begin = strpos($code, 'function(');
                     $code = substr($code, $begin, strrpos($code, '}') - $begin + 1);
 
-                    foreach (
-                        $this->getRelationTypes() as $relation => $impl
-                    ) {
+                    foreach ($this->getRelationTypes() as $relation => $impl) {
                         $search = '$this->' . $relation . '(';
                         if (stripos($code, $search) || ltrim($impl, '\\') === ltrim((string)$type, '\\')) {
                             //Resolve the relation's model to a Relation object.
@@ -657,7 +664,7 @@ class ModelsCommand extends Command
                                             'int|null',
                                             true,
                                             false
-                                        // What kind of comments should be added to the relation count here?
+                                            // What kind of comments should be added to the relation count here?
                                         );
                                     }
                                 } elseif ($relation === 'morphTo') {
@@ -994,6 +1001,14 @@ class ModelsCommand extends Command
     /**
      * @return bool
      */
+    protected function hasLowerCaseProperties()
+    {
+        return $this->laravel['config']->get('ide-helper.model_lower_case_properties', false);
+    }
+
+    /**
+     * @return bool
+     */
     protected function hasCamelCaseModelProperties()
     {
         return $this->laravel['config']->get('ide-helper.model_camel_case_properties', false);
@@ -1069,7 +1084,7 @@ class ModelsCommand extends Command
         $type = implode('|', $types);
 
         if ($returnType->allowsNull()) {
-            $type .='|null';
+            $type .= '|null';
         }
 
         return $type;
@@ -1207,8 +1222,7 @@ class ModelsCommand extends Command
     {
         $reflection = $model instanceof ReflectionClass
             ? $model
-            : new ReflectionObject($model)
-        ;
+            : new ReflectionObject($model);
 
         $className = trim($className, '\\');
         $writingToExternalFile = !$this->write;
@@ -1273,10 +1287,10 @@ class ModelsCommand extends Command
             $type = implode('|', $types);
 
             if ($paramType->allowsNull()) {
-                if (count($types)==1) {
+                if (count($types) == 1) {
                     $type = '?' . $type;
                 } else {
-                    $type .='|null';
+                    $type .= '|null';
                 }
             }
 
@@ -1353,7 +1367,7 @@ class ModelsCommand extends Command
         } else {
             $types = [];
             foreach ($reflection_type->getTypes() as $named_type) {
-                if ($named_type->getName()==='null') {
+                if ($named_type->getName() === 'null') {
                     continue;
                 }
 
