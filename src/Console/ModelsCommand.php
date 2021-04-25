@@ -11,38 +11,38 @@
 
 namespace Barryvdh\LaravelIdeHelper\Console;
 
-use Throwable;
-use ReflectionType;
-use ReflectionClass;
-use ReflectionObject;
-use ReflectionNamedType;
-use Illuminate\Support\Str;
-use Illuminate\Console\Command;
-use Barryvdh\Reflection\DocBlock;
-use Barryvdh\Reflection\DocBlock\Tag;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Model;
-use Composer\Autoload\ClassMapGenerator;
-use Barryvdh\Reflection\DocBlock\Context;
-use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use phpDocumentor\Reflection\Types\ContextFactory;
-use Symfony\Component\Console\Input\InputArgument;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Symfony\Component\Console\Output\OutputInterface;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Barryvdh\LaravelIdeHelper\Contracts\ModelHookInterface;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Barryvdh\Reflection\DocBlock;
+use Barryvdh\Reflection\DocBlock\Context;
 use Barryvdh\Reflection\DocBlock\Serializer as DocBlockSerializer;
+use Barryvdh\Reflection\DocBlock\Tag;
+use Composer\Autoload\ClassMapGenerator;
+use Illuminate\Console\Command;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\ContextFactory;
+use ReflectionClass;
+use ReflectionNamedType;
+use ReflectionObject;
+use ReflectionType;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 /**
  * A command to generate autocomplete information for your IDE
