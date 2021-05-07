@@ -238,7 +238,7 @@ return [
      | Note, it is currently an all-or-nothing option.
      |
      */
-    'model_lower_case_properties' => true,
+    'model_lower_case_properties' => false,
 
     /*
      |--------------------------------------------------------------------------
