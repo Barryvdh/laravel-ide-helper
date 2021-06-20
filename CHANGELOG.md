@@ -10,6 +10,14 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Use platformName to determine db type when casting boolean types [\#1212 / stockalexander](https://github.com/barryvdh/laravel-ide-helper/pull/1212)
 
+2021-06-18, 2.10.1
+------------------
+### Added
+- Added Type registration according to [Custom Mapping Types documentation](https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/types.html#custom-mapping-types)
+
+### Fixed
+- Fixing issue where configured custom_db_types could cause a DBAL exception to be thrown while running `ide-helper:models`
+
 2021-04-09, 2.10.0
 ------------------
 ### Added
